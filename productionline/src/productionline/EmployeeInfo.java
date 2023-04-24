@@ -10,11 +10,12 @@ public class EmployeeInfo {
 	private Scanner sc;
 	private String deptId;
 	private Pattern p;
+	private String encodedDeptId;
+	
 	
 	public EmployeeInfo() {
 		setFullName();
 		getId();
-		//sc.close();
 	}
 
 	public StringBuilder getFullName() {
@@ -70,9 +71,11 @@ public class EmployeeInfo {
 		String str = sc.nextLine();
 		if (validId(str)) {
 			setDeptId(str);
+			this.encodedDeptId = encodeString(str);
 		}
 		else {
 			setDeptId("None01");
+			this.encodedDeptId = null;
 		}
 		return null;
 	}
@@ -84,7 +87,21 @@ public class EmployeeInfo {
 		return false;
 	}
 	
-	public String reverseString(String id) {
+	private String encodeString(String id) {
+		char [] temp = id.toCharArray();
+		String str = "";
+		for (int i = 0; i < id.length(); i++) {
+			temp[i] = (char)((int)temp[i] << 1);
+			str += temp[i];
+		}
+		return str;
+	}
+	
+	public String getEncodedDeptId() {
+		return this.encodedDeptId;
+	}
+	
+	private String decodeString(String id) {
 		char [] temp = id.toCharArray();
 		String str = "";
 		for (int i = 0; i < id.length(); i++) {
@@ -96,6 +113,6 @@ public class EmployeeInfo {
 	
 	@Override
 	public String toString() {
-		return "Employee name: "+ getFullName() + "\nEmployee code: " + getCode()+ "\nDeptId: "+getDeptId();
+		return "Employee name: "+ getFullName() + "\nEmployee code: " + getCode()+ "\nDept Id: "+getDeptId() + "\nEncode Dept Id: "+getEncodedDeptId();
 	}
 }
